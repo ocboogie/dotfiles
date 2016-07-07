@@ -1,2 +1,2 @@
-sh boht/install.sh
+sh both/install.sh
 sh desktop/install.sh
