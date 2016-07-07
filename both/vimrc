@@ -1,0 +1,23 @@
+execute pathogen#infect()
+syntax on
+filetype plugin indent on
+
+
+" Keybindings
+nmap oo o<Esc>
+nmap OO O<Esc>
+map <Leader>w :update<CR>
+map <F2> :set paste<CR>i
+
+" Settings
+set expandtab
+set relativenumber
+set ruler         " show the cursor position all the time
+set hlsearch      " highlight matches
+set nobackup
+set nowritebackup
+" Softtabs, 2 spaces
+set tabstop=2
+set shiftwidth=2
+set expandtab
+
