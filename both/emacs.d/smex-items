@@ -1,0 +1,20 @@
+
+;; ----- smex-history -----
+(
+ impatient-mode
+ httpd-start
+ httpd-stop
+ list-packages
+ cd
+ 5x5
+ arp
+)
+
+;; ----- smex-data -----
+(
+ (cd . 1)
+ (list-packages . 1)
+ (httpd-start . 6)
+ (impatient-mode . 4)
+ (httpd-stop . 1)
+)
