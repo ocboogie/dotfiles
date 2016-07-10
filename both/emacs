@@ -1,0 +1,26 @@
+;; Packages
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(package-initialize)
+
+
+;; Enable packages
+(require 'evil)
+(evil-mode 1)
+
+(require 'evil-surround)
+(global-evil-surround-mode 1)
+
+(require 'evil-commentary)
+(evil-commentary-mode)
+
+;; setting
+(global-relative-line-numbers-mode)
+(setq backup-directory-alist `(("." . "~/.saves")))
+(setq inhibit-startup-message t)
+(toggle-scroll-bar -1) 
+(menu-bar-mode -1) 
+(tool-bar-mode -1) 
+
+(load-theme 'ample t t)
+(enable-theme 'ample)
