@@ -1,0 +1,48 @@
+;; Packages
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(package-initialize)
+
+
+;; Enable packages
+(global-evil-leader-mode)
+
+(require 'evil-surround)
+(global-evil-surround-mode 1)
+
+(require 'evil-commentary)
+(evil-commentary-mode)
+
+(require 'evil-matchit)
+(global-evil-matchit-mode 1)
+
+(require 'evil)
+(evil-mode 1)
+
+(require 'flx-ido)
+(ido-mode 1)
+(ido-everywhere 1)
+(flx-ido-mode 1)
+;; disable ido faces to see flx highlights.
+(setq ido-enable-flex-matching t)
+(setq ido-use-faces nil)
+
+;; setting
+(global-relative-line-numbers-mode)
+(setq backup-directory-alist `(("." . "~/.saves")))
+(setq inhibit-startup-message t)
+(toggle-scroll-bar -1) 
+(menu-bar-mode -1) 
+(tool-bar-mode -1) 
+(global-set-key (kbd "M-x") 'smex)
+(setq x-select-enable-clipboard nil)
+(evil-leader/set-key "p" (kbd "\"+p"))
+
+
+;; get shell to work
+(defun shell ()
+  (interactive)
+  (ansi-term "/bin/zsh"))
+
+(load-theme 'ample t t)
+(enable-theme 'ample)

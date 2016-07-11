@@ -1,9 +1,9 @@
 
 ;; ----- smex-history -----
 (
- impatient-mode
- httpd-start
- httpd-stop
+ tetris
+ flx-ido-mode
+ package-install
  list-packages
  cd
  5x5
@@ -13,8 +13,11 @@
 ;; ----- smex-data -----
 (
  (cd . 1)
- (list-packages . 1)
+ (list-packages . 3)
  (httpd-start . 6)
  (impatient-mode . 4)
  (httpd-stop . 1)
+ (package-install . 1)
+ (flx-ido-mode . 2)
+ (tetris . 1)
 )
