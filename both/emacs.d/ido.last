@@ -1,0 +1,50 @@
+;;; -*- coding: utf-8 -*-
+
+;; ----- ido-last-directory-list -----
+(
+ ("/home/boogie/" . "Documents/")
+ ("/home/boogie/Documents/projects/" . "cook/")
+ ("/home/boogie/Documents/" . "projects/")
+)
+
+;; ----- ido-work-directory-list -----
+(
+ "/home/boogie/.config/i3/"
+ "/home/boogie/Documents/projects/cook/"
+ "/home/boogie/"
+ "/home/boogie/Documents/projects/"
+)
+
+;; ----- ido-work-file-list -----
+(
+ "lock.sh"
+ "lock2.sh"
+ "CIELAB.py"
+ "CHEFSTLT.py"
+ ".emacs"
+ "#CIELAB.py#"
+ ".#CIELAB.py"
+ "passCrack.py"
+)
+
+;; ----- ido-dir-file-cache -----
+(
+ ("/home/boogie/.config/i3/" (22404 30730 733678 530000) "./" "i3blocks.conf" "../" "lock.sh" "config" "config (copy 1)")
+
+ (#("/home/boogie/.config/" 13 21 (face flx-highlight-face)) (22404 29443 100018 70000) "Trolltech.conf" "./" "evolution/" "monitors.xml" "gtx-2.0" "gnome-session/" "gedit/" "libaccounts-glib/" "eog/" "unity/" "pavucontrol.ini" "google-chrome/" "nautilus/" "gpick/" "../" "yelp/" "mimeapps.list" "dconf/" "gtk-3.0/" "xfce4/" "user-dirs.dirs" "ibus/" "menus/" "Skype/" "pulse/" "i3/" "gtk-2.0/" "screen-lock.png" "plank/" "update-notifier/" "sublime-text-3/" "user-dirs.locale" "upstart/" "cef_user_data/" "Thunar/" "compiz-1/")
+
+ ("/home/boogie/" (22404 29512 390983 778000) ".pulse-cookie" ".zsh_history" "./" ".nano/" ".vimrc" ".wget-hsts" ".viminfo" ".gtkrc-2.0" ".steampath" ".profile" ".zcompdump-boogie-Ubuntu-5.1.1" ".zcompdump" ".zshrc" ".pki/" ".thunderbird/" ".gitconfig" ".continuum/" "Public/" "Music/" "Pictures/" ".dbus/" ".fehbg" "../" "Documents/" ".steam/" ".ICEauthority" ".cache/" ".fonts/" ".vim/" ".swp" ".gnome/" ".gnupg/" ".local/" ".thumbnails/" ".Xauthority" ".bash_logout" ".nv/" ".zsh-update" ".oh-my-zsh/" ".python_history" ".dmrc" ".emacs.d/" ".gconf/" ".steampid" ".config/" "anaconda3/" "Downloads/" ".lesshsQ" "Desktop/" "Videos/" ".bash_history" "examples.desktop" ".Skype/" ".sudo_as_admin_successful" ".mozilla/" ".saves/" ".emacs" "dotfiles_old/" ".xsession-errors.old" ".gvfs/" "Templates/" ".bashrc" ".screenlayout/" "dotfiles/" ".xsession-errors" ".icons/")
+
+ ("/home/boogie/Documents/projects/cook/" (22403 11980 758672 65000) "PALIN.py" "Enormous-Input-Test.py" "CIELAB.py" "./" "LUCKFOUR.py" "FLOW005.py" "../" "CHEFSTLT.py" "PRIME1.py" "FLOW002.py" "TWTVLOSE.py" "Life,-the-Universe,-and-Everything.py" "REMISS.py" "#CHEFSTLT.py#" "START01.py" "PALL01.py")
+
+ ("/home/boogie/dotfiles/both/" (22403 11725 132396 850000) "emacs.d/" "./" "#emacs#" "install.sh" "../" "vim/" "emacs" "vimrc")
+
+ ("/home/" (22393 49959 287400 154000) "./" "../" "boogie/")
+
+ ("/home/boogie/Documents/projects/" (22403 10167 3668 352000) "./" "Deep/" "../" "cook/" "passCrack.py" "console/" "passCrack")
+
+ ("/home/boogie/Documents/" (22402 8458 735892 759000) "./" "../" "projects/" "wordlistTest/" "gitHelp")
+)
+
+;; ----- ido-unc-hosts-cache -----
+t

@@ -1,13 +1,13 @@
 
 ;; ----- smex-history -----
 (
+ shell
+ jedi:setup
+ package-install
+ jedi:install-server
  tetris
  flx-ido-mode
- package-install
  list-packages
- cd
- 5x5
- arp
 )
 
 ;; ----- smex-data -----
@@ -17,7 +17,10 @@
  (httpd-start . 6)
  (impatient-mode . 4)
  (httpd-stop . 1)
- (package-install . 1)
+ (package-install . 2)
  (flx-ido-mode . 2)
  (tetris . 1)
+ (shell . 7)
+ (jedi:install-server . 1)
+ (jedi:setup . 2)
 )

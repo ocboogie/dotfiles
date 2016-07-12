@@ -95,6 +95,7 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
 
 # Volume Control
+bindsym $mod+Shift+i exec bash ~/.config/i3/lock.sh
 bindsym $mod+Shift+p exec pavucontrol
 for_window [class="Pavucontrol"] floating enable
 

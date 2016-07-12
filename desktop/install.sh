@@ -8,7 +8,7 @@
 
 dir=~/dotfiles/desktop                    # dotfiles directory
 olddir=~/dotfiles_old             # old dotfiles backup directory
-files="config/i3/config config/i3/i3blocks.conf"    # list of files/folders to symlink in homedir
+files="config/i3/config config/i3/i3blocks.conf config/i3/screen-lock.png config/i3/lock.sh"    # list of files/folders to symlink in homedir
 
 ##########
 
