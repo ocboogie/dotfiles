@@ -1,13 +1,13 @@
 
 ;; ----- smex-history -----
 (
+ server-start
  shell
  jedi:setup
  package-install
  jedi:install-server
  tetris
  flx-ido-mode
- list-packages
 )
 
 ;; ----- smex-data -----
@@ -23,4 +23,5 @@
  (shell . 7)
  (jedi:install-server . 1)
  (jedi:setup . 2)
+ (server-start . 1)
 )
