@@ -250,6 +250,6 @@ bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 
 exec_always feh --bg-scale /home/boogie/Pictures/wall.jpg
-exec xinput --set-prop 8 271 1.75
+exec xinput --set-prop 8 271 1.6
+exec --no-startup-id compton --config ~/.config/compton.conf -b
 exec_always xrandr --output DVI-D-0 --mode 1920x1080 --pos 992x0 --rotate normal --output HDMI-0 --mode 1920x1080 --pos 0x1080 --rotate normal --output DVI-I-1 --off --output DVI-I-0 --primary --mode 1920x1080 --pos 1920x1080 --rotate normal --output DP-1 --off --output DP-0 --off
-exec_always compton -f

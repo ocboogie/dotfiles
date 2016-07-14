@@ -1,0 +1,1 @@
+/home/boogie/dotfiles/both/emacs.d

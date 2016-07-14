@@ -11,16 +11,17 @@
 
 ;; ----- ido-work-directory-list -----
 (
+ "/home/boogie/"
  "/home/boogie/.config/i3/"
  "/home/boogie/dotfiles/desktop/config/i3/"
  "/home/boogie/dotfiles/desktop/"
- "/home/boogie/"
  "/home/boogie/Documents/projects/cook/"
  "/home/boogie/Documents/projects/"
 )
 
 ;; ----- ido-work-file-list -----
 (
+ ".zshrc"
  "config"
  "lock.sh"
  "install.sh"
@@ -30,18 +31,17 @@
  "CHEFSTLT.py"
  ".emacs"
  "#CIELAB.py#"
- ".#CIELAB.py"
 )
 
 ;; ----- ido-dir-file-cache -----
 (
+ ("/home/boogie/" (22407 11949 495652 419000) ".pulse-cookie" ".zsh_history" "./" ".nano/" ".vimrc" ".wget-hsts" ".viminfo" ".gtkrc-2.0" ".steampath" ".profile" ".zcompdump-boogie-Ubuntu-5.1.1" ".zcompdump" ".zshrc" ".pki/" ".thunderbird/" ".gitconfig" ".continuum/" "Public/" "Music/" "Pictures/" ".dbus/" ".fehbg" "../" "Documents/" ".steam/" ".ICEauthority" ".cache/" ".fonts/" ".vim/" ".swp" ".gnome/" ".gnupg/" ".local/" ".thumbnails/" ".Xauthority" ".bash_logout" ".nv/" ".zsh-update" ".oh-my-zsh/" ".python_history" ".dmrc" ".emacs.d/" ".gconf/" ".steampid" ".config/" "anaconda3/" "Downloads/" ".lesshsQ" "Desktop/" "Videos/" ".zsh/" ".bash_history" "examples.desktop" ".Skype/" ".sudo_as_admin_successful" ".mozilla/" ".saves/" ".emacs" "dotfiles_old/" ".xsession-errors.old" ".gvfs/" "Templates/" ".bashrc" ".screenlayout/" "dotfiles/" ".xsession-errors" ".icons/")
+
+ ("/home/boogie/dotfiles/desktop/config/i3/" (22407 11938 691180 581000) "./" "i3blocks.conf" ".#config" "../" "lock.sh" "config" "screen-lock.png")
+
  ("/home/boogie/.config/i3/" (22404 36001 813080 534000) "./" "i3blocks.conf" "../" "lock.sh" "config" "screen-lock2.png")
 
  ("/home/boogie/.config/" (22404 32852 552436 520000) "Trolltech.conf" "./" "evolution/" "monitors.xml" "gtx-2.0" "gnome-session/" "gedit/" "libaccounts-glib/" "eog/" "unity/" "pavucontrol.ini" "google-chrome/" "nautilus/" "gpick/" "../" "yelp/" "mimeapps.list" "dconf/" "gtk-3.0/" "xfce4/" "user-dirs.dirs" "ibus/" "menus/" "Skype/" "pulse/" "i3/" "gtk-2.0/" "plank/" "update-notifier/" "sublime-text-3/" "user-dirs.locale" "upstart/" "cef_user_data/" "Thunar/" "compiz-1/")
-
- ("/home/boogie/" (22404 36655 783938 638000) ".pulse-cookie" ".zsh_history" "./" ".nano/" ".vimrc" ".wget-hsts" ".viminfo" ".gtkrc-2.0" ".steampath" ".profile" ".zcompdump-boogie-Ubuntu-5.1.1" ".zcompdump" ".zshrc" ".pki/" ".thunderbird/" ".gitconfig" ".continuum/" "Public/" "Music/" "Pictures/" ".dbus/" ".fehbg" "../" "Documents/" ".steam/" ".ICEauthority" ".cache/" ".fonts/" ".vim/" ".swp" ".gnome/" ".gnupg/" ".local/" ".thumbnails/" ".Xauthority" ".bash_logout" ".nv/" ".zsh-update" ".oh-my-zsh/" ".python_history" ".dmrc" ".emacs.d/" ".gconf/" ".steampid" ".config/" "anaconda3/" "Downloads/" ".lesshsQ" "Desktop/" "Videos/" ".bash_history" "examples.desktop" ".Skype/" ".sudo_as_admin_successful" ".mozilla/" ".saves/" ".emacs" "dotfiles_old/" ".xsession-errors.old" ".gvfs/" "Templates/" ".bashrc" ".screenlayout/" "dotfiles/" ".xsession-errors" ".icons/")
-
- ("/home/boogie/dotfiles/desktop/config/i3/" (22404 36583 905540 956000) "./" "i3blocks.conf" "../" "lock.sh" "config" "screen-lock.png")
 
  ("/home/boogie/dotfiles/desktop/config/" (22398 31711 866315 113000) "./" "../" "i3/")
 

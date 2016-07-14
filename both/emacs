@@ -41,6 +41,7 @@
 (global-set-key (kbd "M-x") 'smex)
 (setq x-select-enable-clipboard nil)
 (evil-leader/set-key "p" (kbd "\"+p"))
+(evil-leader/set-key "y" (kbd "\"+y"))
 
 ;; get shell to work
 (defun shell ()
