@@ -38,8 +38,8 @@ bindsym $mod+Shift+q kill
 # start dmenu (a program launcher)
 #bindsym $mod+d exec dmenu_run
 
-bindsym $mod+d exec rofi -show run -lines 10 -eh 2 -width 100 -padding 213 -opacity "85" -bw 0 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "System San Francisco Display 18"
-
+#bindsym $mod+d exec rofi -show run -lines 10 -eh 2 -width 100 -padding 213 -opacity "85" -bw 0 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "System San Francisco Display 18"
+bindsym $mod+d exec rofi -show run -lines 10 -eh 2 -opacity "85" -bw 0 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "System San Francisco Display 18"
 #bindsym $mod+d exec rofi -show run -lines 3 -eh 2 -width 100 -padding 450 -opacity "85" -bw 0 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "System San Francisco Display 18"
 
 # There also is the (new) i3-dmenu-desktop which only displays applications

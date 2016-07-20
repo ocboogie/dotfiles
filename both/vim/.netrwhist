@@ -1,5 +1,8 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =3
+let g:netrw_dirhist_cnt =6
 let g:netrw_dirhist_1='/home/boogie/dotfiles/config'
 let g:netrw_dirhist_2='/home/boogie/dotfiles/.git'
 let g:netrw_dirhist_3='/home/ocboogie/dotfiles/both/vim/bundle/auto-pairs'
+let g:netrw_dirhist_4='/home/boogie/.zsh'
+let g:netrw_dirhist_5='/home/boogie/dotfiles/both/zsh'
+let g:netrw_dirhist_6='/home/boogie/.zsh'
