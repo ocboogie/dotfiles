@@ -1,0 +1,3 @@
+{
+  "coc.preferences.formatOnSaveFiletypes": ["rust", "javascript", "typescript", "svelte", "css"],
+}
