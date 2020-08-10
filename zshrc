@@ -75,6 +75,7 @@ source $ZSH/oh-my-zsh.sh
 # User configuration
 
 export PATH="$HOME/.cargo/bin:$PATH"
+export PROJECTS="$HOME/Projects"
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
