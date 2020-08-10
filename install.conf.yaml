@@ -6,5 +6,8 @@
     ~/.config/nvim: 
       create: true
       path: config/nvim
+    ~/.config/coc/extensions/package.json: 
+      create: true
+      path: config/coc/extensions/package.json
 
 
