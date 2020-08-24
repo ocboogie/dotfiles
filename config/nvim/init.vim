@@ -23,6 +23,7 @@ Plug 'neoclide/coc.nvim'
 Plug 'antoinemadec/coc-fzf'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-abolish'
 
 " Language
 Plug 'leafOfTree/vim-svelte-plugin'
@@ -163,6 +164,7 @@ set noshowmode
 nnoremap <silent> <leader><space> :call Fzf_dev()<CR>
 
 " ripgrep
+let $FZF_DEFAULT_OPTS='--history=' . $HOME . '/.fzf_history'
 if executable('rg')
   let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
   set grepprg=rg\ --vimgrep
