@@ -29,6 +29,7 @@ Plug 'tpope/vim-abolish'
 Plug 'leafOfTree/vim-svelte-plugin'
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
+Plug 'vimscript/toml'
 call plug#end()
 
 " ================ General Config ====================
