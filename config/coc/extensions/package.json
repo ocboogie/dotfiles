@@ -3,6 +3,7 @@
     "coc-prettier": ">=1.1.17",
     "coc-rust-analyzer": ">=0.7.10",
     "coc-svelte": ">=0.1.1",
-    "coc-tsserver": ">=1.5.3"
+    "coc-tsserver": ">=1.5.3",
+    "coc-vetur": ">=1.2.1"
   }
 }
