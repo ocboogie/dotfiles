@@ -14,7 +14,7 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': ':UpdateRemotePlugins'}
+Plug 'preservim/nerdtree'
 
 " General configuration
 Plug 'machakann/vim-sandwich'
@@ -166,7 +166,7 @@ set smartcase       " ...unless we type a capital
 " ================ Mappings ===========================
 nnoremap <leader>\ :nohlsearch<CR>
 nnoremap <leader>s <C-^>
-nnoremap <leader><TAB> <cmd>CHADopen<cr>
+nnoremap <leader><TAB> <cmd>NERDTreeToggle<cr>
 
 " ================ Plugin Specific ===========================
 
