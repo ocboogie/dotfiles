@@ -30,6 +30,7 @@ Plug 'leafOfTree/vim-svelte-plugin'
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
 Plug 'vimscript/toml'
+Plug 'rust-lang/rust.vim'
 call plug#end()
 
 " ================ General Config ====================
@@ -42,7 +43,8 @@ set ttimeout                    " https://vi.stackexchange.com/a/20220
 set ttimeoutlen=100
 set signcolumn=yes:2
 set hidden
-filetype plugin on
+syntax enable
+filetype plugin indent on
 
 " Create a command named 'Vimrc' that will open the .vimrc file
 command! -nargs=0 Vimrc :e ~/.config/nvim/init.vim
@@ -355,8 +357,6 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
 " Show all diagnostics.
-nnoremap <silent><nowait> <leader>d  :<C-u>CocFzfList diagnostics<cr>
-nnoremap <silent><nowait> <leader>c  :<C-u>CocFzfList commands<cr>
-nnoremap <silent><nowait> <leader>a  :<C-u>CocFzfList symbols<cr>
-nnoremap <silent><nowait> <leader>z  :<C-u>CocFzfList outline<cr>
+nnoremap <silent><nowait> <leader>d  :<C-u>CocList diagnostics<cr>
+nnoremap <silent><nowait> <leader>c  :<C-u>CocList commands<cr>
 
