@@ -75,6 +75,7 @@ source $ZSH/oh-my-zsh.sh
 # User configuration
 
 export PROJECTS="$HOME/Projects"
+export PATH="$PATH:$HOME/home/boogie/.yarn/bin"
 
 source $HOME/.cargo/env
 
