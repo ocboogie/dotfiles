@@ -31,6 +31,8 @@ Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
 Plug 'vimscript/toml'
 Plug 'rust-lang/rust.vim'
+Plug 'glench/vim-jinja2-syntax'
+Plug 'elixir-editors/vim-elixir'
 call plug#end()
 
 " ================ General Config ====================
@@ -169,6 +171,9 @@ nnoremap <leader>s <C-^>
 nnoremap <leader><TAB> <cmd>NERDTreeToggle<cr>
 
 " ================ Plugin Specific ===========================
+
+" ---------tera---------
+autocmd BufNewFile,BufRead *.tera set ft=jinja
 
 " ---------vim-commentary---------
 autocmd FileType svelte setlocal commentstring=<!--\ %s\ -->
@@ -359,4 +364,5 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 " Show all diagnostics.
 nnoremap <silent><nowait> <leader>d  :<C-u>CocList diagnostics<cr>
 nnoremap <silent><nowait> <leader>c  :<C-u>CocList commands<cr>
+nnoremap <silent><nowait> <leader>n  :<C-u>CocList -I symbols<cr>
 

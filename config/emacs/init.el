@@ -1,0 +1,88 @@
+;; Straight bootstrap
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+;; General config
+(setq inhibit-startup-message t)
+(setq custom-file (concat user-emacs-directory "/custom.el"))
+
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+(tooltip-mode -1)
+(set-fringe-mode 10) 
+
+(menu-bar-mode -1)
+
+(set-face-attribute 'default nil :font "monospace" :height 120)
+
+;; Packages
+(straight-use-package 'which-key)
+(which-key-mode 1)
+
+(straight-use-package 'general)
+
+(straight-use-package 'ivy)
+(ivy-mode 1)
+
+(straight-use-package 'counsel)
+
+(straight-use-package 'swiper)
+
+(straight-use-package 'projectile)
+(projectile-mode +1)
+(setq projectile-project-search-path '"~/Projects")
+
+(setq evil-want-keybinding nil)
+(straight-use-package 'evil)
+(evil-mode 1)
+
+(straight-use-package 'evil-collection)
+(evil-collection-init)
+
+(straight-use-package 'treemacs)
+(straight-use-package 'treemacs-projectile)
+(straight-use-package 'treemacs-evil)
+(require 'treemacs-evil)
+
+(straight-use-package 'all-the-icons)
+
+(straight-use-package 'doom-themes)
+(setq doom-themes-enable-bold t
+  doom-themes-enable-italic t) 
+(doom-themes-visual-bell-config)
+(doom-themes-treemacs-config)
+(load-theme 'doom-dracula t)
+
+(straight-use-package 'doom-modeline)
+(doom-modeline-mode 1)
+
+(straight-use-package 'rustic)
+
+(straight-use-package 'lsp-mode)
+(require 'lsp-mode)
+(lsp-mode 1)
+
+(straight-use-package 'company-mode)
+
+
+;; Keybinds
+(general-create-definer my-leader-def 
+  :states '(normal motion)
+  :keymaps 'override
+  :prefix "SPC")
+
+(my-leader-def "SPC" 'find-file)
+(my-leader-def "TAB" 'treemacs)
+(my-leader-def "p" 'projectile-command-map)
+(my-leader-def "t" 'counsel-switch-buffer)
+

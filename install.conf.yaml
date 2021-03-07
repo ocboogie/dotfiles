@@ -9,5 +9,11 @@
     ~/.config/coc/extensions/package.json: 
       create: true
       path: config/coc/extensions/package.json
+    ~/.config/emacs/early-init.el:
+      create: true
+      path: config/emacs/early-init.el
+    ~/.config/emacs/init.el:
+      create: true
+      path: config/emacs/init.el
 
 

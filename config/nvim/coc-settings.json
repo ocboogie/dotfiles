@@ -1,3 +1,17 @@
 {
-  "coc.preferences.formatOnSaveFiletypes": ["rust", "javascript", "typescript", "svelte", "css", "scss", "vue"]
+  "rust-analyzer.serverPath": "rust-analyzer",
+  "coc.preferences.formatOnSaveFiletypes": [
+    "html",
+    "javascript",
+    "typescript",
+    "rust",
+    "svelte",
+    "css",
+    "scss",
+    "vue",
+    "go",
+    "golang",
+    "json",
+    "typescriptreact"
+  ]
 }
