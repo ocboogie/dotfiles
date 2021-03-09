@@ -13,5 +13,7 @@ bindkey -v
 
 alias ls='exa'                                      # ls
 alias l='exa -albF --git'                           # list, size, type, git
+alias ..="cd .."
+alias ...="cd ../.."
 
 eval "$(starship init zsh)"
