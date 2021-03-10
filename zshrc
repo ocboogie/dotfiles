@@ -2,6 +2,8 @@ source ~/.zinit/bin/zinit.zsh
 
 zinit wait lucid light-mode for \
       zdharma/history-search-multi-word \
+  depth"1" \
+      jeffreytse/zsh-vi-mode \
   atinit"zicompinit; zicdreplay" \
       zdharma/fast-syntax-highlighting \
   atload"_zsh_autosuggest_start" \
