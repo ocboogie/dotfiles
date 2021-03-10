@@ -15,5 +15,11 @@
     ~/.config/emacs/init.el:
       create: true
       path: config/emacs/init.el
-
+    ~/.config/alacritty:
+      create: true
+      path: config/alacritty
+    ~/.config/sway:
+      if: '[ `uname` = Linux ]'
+      create: true
+      path: config/sway
 
