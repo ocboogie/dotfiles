@@ -19,7 +19,7 @@ set $term alacritty
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
 # set $menu dmenu_path | dmenu | xargs swaymsg exec --
-set $menu wofi --show drun | xargs swaymsg exec --
+set $menu exec $term --class=launcher -e $HOME/.scripts/sway-launcher-desktop/sway-launcher-desktop.sh
 
 ### Output configuration
 #
@@ -256,6 +256,8 @@ bar {
     # }
 }
 
+
+for_window [app_id="^launcher$"] floating enable, sticky enable, resize set 30 ppt 60 ppt, border pixel 10
 
 for_window [app_id="Chromium"] border pixel 1
 assign [app_id="Chromium"] workspace $wsBrowser
