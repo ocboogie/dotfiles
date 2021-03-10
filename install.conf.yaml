@@ -1,6 +1,9 @@
 - clean: ['~']
 
 - link:
+    ~/.scripts:
+      if: '[ `uname` = Linux ]'
+      path: scripts
     ~/.tmux.conf: tmux.conf
     ~/.zshrc: zshrc
     ~/.config/nvim: 

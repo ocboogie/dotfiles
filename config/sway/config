@@ -176,7 +176,7 @@ input "type:keyboard" {
     # Move focus to the parent container
     bindsym $mod+a focus parent
 
-    bindsym $mod+p exec $HOME/.config/sway/open-project
+    bindsym $mod+p exec $HOME/.scripts/open-project
 #
 # Scratchpad:
 #
@@ -266,6 +266,6 @@ assign [app_id="Chromium"] workspace $wsBrowser
 # workspace $wsTerm
 # exec $term
 
-exec python3 $HOME/.config/sway/inactive-windows-transparency.py
+exec python3 $HOME/.scripts/inactive-windows-transparency.py
 
 include /etc/sway/config.d/*
