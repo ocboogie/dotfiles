@@ -1,5 +1,0 @@
-#!/bin/bash
-
-project=$(ls $PROJECTS | wofi --dmenu)
-alacritty --working-directory $PROJECTS/$project -e zsh -c "nvim && exec zsh" &
-alacritty --working-directory $PROJECTS/$project 

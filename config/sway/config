@@ -175,8 +175,6 @@ input "type:keyboard" {
 
     # Move focus to the parent container
     bindsym $mod+a focus parent
-
-    bindsym $mod+p exec $HOME/.scripts/open-project
 #
 # Scratchpad:
 #
