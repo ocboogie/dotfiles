@@ -19,7 +19,8 @@ set $term alacritty
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
 # set $menu dmenu_path | dmenu | xargs swaymsg exec --
-set $menu exec $term --class=launcher -e $HOME/.scripts/sway-launcher-desktop/sway-launcher-desktop.sh
+set $launcherAppId launcher
+set $menu exec $term --class=$launcherAppId -e $HOME/.scripts/sway-launcher-desktop/sway-launcher-desktop.sh
 
 ### Output configuration
 #
@@ -255,7 +256,7 @@ bar {
 }
 
 
-for_window [app_id="^launcher$"] floating enable, sticky enable, resize set 30 ppt 60 ppt, border pixel 10
+for_window [app_id=$launcherAppId] floating enable, sticky enable, resize set 30 ppt 60 ppt, border pixel 10
 
 for_window [app_id="Chromium"] border pixel 1
 assign [app_id="Chromium"] workspace $wsBrowser
@@ -267,5 +268,6 @@ assign [app_id="Chromium"] workspace $wsBrowser
 # exec $term
 
 exec python3 $HOME/.scripts/inactive-windows-transparency.py
+exec python3 $HOME/.scripts/close-launcher.py --app-id $launcherAppId
 
 include /etc/sway/config.d/*
