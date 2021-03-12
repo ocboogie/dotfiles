@@ -12,6 +12,9 @@ zinit wait lucid light-mode for \
   blockf atpull'zinit creinstall -q .' \
       zsh-users/zsh-completions \
 
+# Smart tab complete
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+
 # History
 HISTFILE=~/.zsh_history
 HISTSIZE=1000
