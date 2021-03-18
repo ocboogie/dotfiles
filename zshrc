@@ -10,7 +10,7 @@ zinit wait lucid light-mode for \
   atload"_zsh_autosuggest_start" \
       zsh-users/zsh-autosuggestions \
   blockf atpull'zinit creinstall -q .' \
-      zsh-users/zsh-completions \
+      zsh-users/zsh-completions
 
 # Smart tab complete
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
