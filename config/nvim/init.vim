@@ -26,7 +26,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-abolish'
 
 " Language
-Plug 'leafOfTree/vim-svelte-plugin'
+Plug 'evanleck/vim-svelte', {'branch': 'main'}
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
 Plug 'vimscript/toml'
@@ -253,6 +253,12 @@ nnoremap <silent> <leader>p :call fzf#run(fzf#wrap({
       \'sink': 'cd'}))<CR>
 
 nnoremap <silent> <leader>t :Buffers<CR>
+
+" ---------svelte---------
+let g:svelte_preprocessor_tags = [
+  \ { 'name': 'ts', 'tag': 'script', 'as': 'typescript' }
+  \ ]
+let g:svelte_preprocessors = ['ts', 'typescript']
 
 " ---------coc.nvim---------
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
