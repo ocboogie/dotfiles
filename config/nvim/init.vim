@@ -18,7 +18,7 @@ Plug 'preservim/nerdtree'
 
 " General configuration
 Plug 'machakann/vim-sandwich'
-Plug 'chrisbra/matchit'
+Plug 'adelarsq/vim-matchit'
 Plug 'neoclide/coc.nvim'
 Plug 'antoinemadec/coc-fzf'
 Plug 'tpope/vim-fugitive'
