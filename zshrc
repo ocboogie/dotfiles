@@ -13,10 +13,6 @@ zinit light jeffreytse/zsh-vi-mode
 zinit ice wait lucid atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" 
 zinit light zdharma/fast-syntax-highlighting
 
-# zsh-autosuggestions
-zinit ice wait lucid atload"!_zsh_autosuggest_start"
-zinit light zsh-users/zsh-autosuggestions
-
 # zsh-startify, a vim-startify like plugin
 zinit ice lucid atload"zsh-startify"
 zinit light zdharma/zsh-startify
