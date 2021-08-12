@@ -5,9 +5,9 @@ source ~/.zinit/bin/zinit.zsh # zinit bootstrap
 zinit ice wait lucid blockf atpull'zinit creinstall -q .' 
 zinit light zsh-users/zsh-completions
 
-# zsh vi mode
-zinit ice wait lucid depth"1"
-zinit light jeffreytse/zsh-vi-mode 
+# Use system clipboard in vi mode
+zinit ice wait lucid
+zinit light kutsan/zsh-system-clipboard
 
 # fast-syntax-highlighting
 zinit ice wait lucid atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" 
