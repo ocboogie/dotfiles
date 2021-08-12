@@ -1,6 +1,10 @@
 # zinit
 source ~/.zinit/bin/zinit.zsh # zinit bootstrap
 
+# zsh-autosuggestions
+zinit ice wait lucid atload"!_zsh_autosuggest_start; bindkey '^ ' autosuggest-accept"
+zinit light zsh-users/zsh-autosuggestions
+
 # Additional completion definitions
 zinit ice wait lucid blockf atpull'zinit creinstall -q .' 
 zinit light zsh-users/zsh-completions
