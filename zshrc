@@ -43,6 +43,9 @@ HISTSIZE=1000
 SAVEHIST=1000
 setopt INC_APPEND_HISTORY_TIME # "Writes to history from all terminals but that 
 
+# Faster escaping in vi mode (see https://www.johnhawthorn.com/2012/09/vi-escape-delays/)
+KEYTIMEOUT=1
+
 # Keybinds
 bindkey -v # set vi mode
 
