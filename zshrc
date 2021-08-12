@@ -1,6 +1,9 @@
 # zinit
 source ~/.zinit/bin/zinit.zsh # zinit bootstrap
 
+# Install fzf (https://zdharma.github.io/zinit/wiki/Zinit-Packages/#introductory_example)
+zinit pack"binary" for fzf
+
 # zsh-autosuggestions
 zinit ice wait lucid atload"!_zsh_autosuggest_start; bindkey '^ ' autosuggest-accept"
 zinit light zsh-users/zsh-autosuggestions
