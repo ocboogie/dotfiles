@@ -9,6 +9,7 @@ Plug 'jszakmeister/vim-togglecursor'
 Plug 'itchyny/lightline.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'ryanoasis/vim-devicons'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 " Navigation
 Plug 'christoomey/vim-tmux-navigator'
@@ -19,7 +20,7 @@ Plug 'preservim/nerdtree'
 " General configuration
 Plug 'machakann/vim-sandwich'
 Plug 'adelarsq/vim-matchit'
-Plug 'neoclide/coc.nvim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'antoinemadec/coc-fzf'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
@@ -166,9 +167,24 @@ set smartcase       " ...unless we type a capital
 
 
 " ================ Mappings ===========================
+
 nnoremap <leader>\ :nohlsearch<CR>
 nnoremap <leader>s <C-^>
 nnoremap <leader><TAB> <cmd>NERDTreeToggle<cr>
+
+" Copy into clipboard
+nnoremap <leader>y "+y
+vnoremap <leader>y "+y
+
+" Copy whole file
+nnoremap <leader>Y gg"+yG
+
+" Delete without overwriting the default register
+nnoremap <leader>d "_d
+vnoremap <leader>d "_d
+
+" Paste without overwriting the default register
+xnoremap <leader>p "_dP
 
 " ================ Plugin Specific ===========================
 
@@ -247,7 +263,7 @@ function! Fzf_dev()
 endfunction
 
 " Fuzzy find projects and cd into them 
-nnoremap <silent> <leader>p :call fzf#run(fzf#wrap({
+nnoremap <silent> <leader>P :call fzf#run(fzf#wrap({
       \'source': 'ls', 
       \'dir': $PROJECTS, 
       \'sink': 'cd'}))<CR>
