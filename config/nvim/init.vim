@@ -10,6 +10,7 @@ Plug 'itchyny/lightline.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'ryanoasis/vim-devicons'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'psliwka/vim-smoothie'
 
 " Navigation
 Plug 'christoomey/vim-tmux-navigator'
