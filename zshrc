@@ -24,10 +24,6 @@ zinit light kutsan/zsh-system-clipboard
 zinit ice wait lucid atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" 
 zinit light zdharma/fast-syntax-highlighting
 
-# zsh-startify, a vim-startify like plugin
-zinit ice lucid atload"zsh-startify"
-zinit light zdharma/zsh-startify
-
 # zdharma/history-search-multi-word
 zstyle ":history-search-multi-word" page-size "11"
 zinit ice wait"1" lucid
