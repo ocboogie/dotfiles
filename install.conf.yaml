@@ -1,12 +1,12 @@
-- clean: ['~']
+- clean: ["~"]
 
 - link:
     ~/.scripts:
-      if: '[ `uname` = Linux ]'
+      if: "[ `uname` = Linux ]"
       path: scripts
     ~/.tmux.conf: tmux.conf
     ~/.zshrc: zshrc
-    ~/.config/nvim: 
+    ~/.config/nvim:
       create: true
       path: config/nvim
     ~/.config/emacs/early-init.el:
@@ -19,7 +19,6 @@
       create: true
       path: config/alacritty
     ~/.config/sway:
-      if: '[ `uname` = Linux ]'
+      if: "[ `uname` = Linux ]"
       create: true
       path: config/sway
-

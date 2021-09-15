@@ -3,106 +3,49 @@ local on_attach = function(client, bufnr)
 	vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
 
 	-- Disable native lsp formatting
-	-- if client ~= "efm" then
-	-- 	client.resolved_capabilities.document_formatting = false
-	-- end
+	client.resolved_capabilities.document_formatting = false
 
 	--Enable completion triggered by <c-x><c-o>
 	vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 end
 
-local function setup_servers()
-	require("lspinstall").setup()
+local null_ls = require("null-ls")
+null_ls.config({
+	sources = NullLsSources(null_ls),
+})
 
-	local servers = require("lspinstall").installed_servers()
-	for _, server in pairs(servers) do
-		local config = { on_attach = on_attach }
-
-		if server == "lua" then
-			config.settings = {
-				Lua = {
-					diagnostics = {
-						-- Get the language server to recognize the `vim` global
-						globals = { "vim" },
-					},
-				},
-			}
-			-- elseif server == "svelte" then
-			-- 	config.settings = {
-			-- 		svelte = { plugin = { svelte = { format = { enable = false } } } },
-			-- 	}
-		elseif server == "efm" then
-			local prettierdConfig = {
-				formatCommand = 'prettierd "${INPUT}"',
-				formatStdin = true,
-			}
-
-			config.init_options = { documentFormatting = true }
-			config.settings = {
-				rootMarkers = { ".git/" },
-				languages = {
-					lua = {
-						{ formatCommand = "stylua -s -", formatStdin = true },
-					},
-					javascript = { prettierdConfig },
-					javascriptreact = { prettierdConfig },
-					typescript = { prettierdConfig },
-					typescriptreact = { prettierdConfig },
-				},
-			}
-			config.filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "lua" }
-		end
-
-		require("lspconfig")[server].setup(config)
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
+for i, v in pairs(LSPServers) do
+	if type(i) == "number" then
+		require("lspconfig")[v].setup({ on_attach = on_attach, capabilities = capabilities })
+	else
+		v.on_attach = on_attach
+		v.capabilities = capabilities
+		require("lspconfig")[i].setup(v)
 	end
 end
 
-setup_servers()
-
--- Automatically reload after `:LspInstall <server>` so we don't have to restart neovim
-require("lspinstall").post_install_hook = function()
-	setup_servers() -- reload installed servers
-	vim.cmd("bufdo e") -- this triggers the FileType autocmd that starts the server
-end
-
--- local null_ls = require("null-ls")
--- null_ls.config({
--- 	sources = {
--- 		null_ls.builtins.formatting.stylua,
--- 		null_ls.builtins.formatting.prettier,
--- 	},
--- })
--- require("lspconfig")["null-ls"].setup({
--- 	on_attach = on_attach,
--- })
-
-vim.lsp.protocol.CompletionItemKind = {
-	"   (Text) ",
-	"   (Method)",
-	"   (Function)",
-	"   (Constructor)",
-	" ﴲ  (Field)",
-	"[] (Variable)",
-	"   (Class)",
-	" ﰮ  (Interface)",
-	"   (Module)",
-	" 襁 (Property)",
-	"   (Unit)",
-	"   (Value)",
-	" 練 (Enum)",
-	"   (Keyword)",
-	"   (Snippet)",
-	"   (Color)",
-	"   (File)",
-	"   (Reference)",
-	"   (Folder)",
-	"   (EnumMember)",
-	" ﲀ  (Constant)",
-	" ﳤ  (Struct)",
-	"   (Event)",
-	"   (Operator)",
-	"   (TypeParameter)",
-}
+local cmp = require("cmp")
+local lspkind = require("lspkind")
+cmp.setup({
+	formatting = {
+		format = function(_, vim_item)
+			vim_item.kind = lspkind.presets.default[vim_item.kind]
+			return vim_item
+		end,
+	},
+	snippet = {
+		expand = function(args)
+			vim.fn["vsnip#anonymous"](args.body)
+		end,
+	},
+	mapping = CmpMapping(cmp),
+	sources = {
+		{ name = "nvim_lsp" },
+		{ name = "buffer" },
+	},
+})
 
 for _, sign in ipairs({
 	{ name = "LspDiagnosticsSignError", text = "" },

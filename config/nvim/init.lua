@@ -49,9 +49,72 @@ cmd([[
   augroup END
 ]])
 
+------------------ LSP --------------------
+CmpMapping = function(cmp)
+	return {
+		["<CR>"] = cmp.mapping.confirm({
+			behavior = cmp.ConfirmBehavior.Replace,
+			select = true,
+		}),
+		["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i" }),
+	}
+end
+
+-- https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md
+LSPServers = {
+	-- pnpm install -g vscode-langservers-extracted
+	"cssls",
+	"html",
+	"jsonls",
+	-- pnpm install -g sql-language-server
+	"sqlls",
+	-- pnpm install -g @tailwindcss/language-server
+	"tailwindcss",
+	-- pnpm install -g svelte-language-server
+	"svelte",
+	-- pnpm install -g typescript typescript-language-server
+	"tsserver",
+	-- Currently just using the one lspinstall installed
+	sumneko_lua = {
+		cmd = { vim.fn.stdpath("data") .. "/lspinstall/lua/sumneko-lua-language-server" },
+		settings = {
+			Lua = {
+				runtime = {
+					-- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+					version = "LuaJIT",
+					-- Setup your lua path
+					path = runtime_path,
+				},
+				diagnostics = {
+					-- Get the language server to recognize the `vim` global
+					globals = { "vim" },
+				},
+			},
+		},
+	},
+	"null-ls",
+}
+
+NullLsSources = function(null_ls)
+	-- https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
+	return {
+		null_ls.builtins.formatting.stylua,
+		null_ls.builtins.formatting.prettierd,
+		null_ls.builtins.formatting.gofmt,
+	}
+end
+
+-- Treat javascript as javascriptreact
+cmd([[
+augroup filetype_jsx
+    autocmd!
+    autocmd FileType javascript set filetype=javascriptreact
+augroup END
+]])
+
 ------------------ Mapping --------------------
 -- I ain't perfect I need some tree
-map("n", "<leader><tab>", ":NvimTreeToggle<CR>")
+map("n", "<leader><tab>", ":NvimTreeToggle<CR>", "silent")
 
 -- Searching
 map("n", "<leader>;", "<cmd>Telescope projects<cr>")
@@ -62,8 +125,6 @@ map("n", "<leader>n", "<cmd>Telescope lsp_document_symbols<CR>", "silent")
 map("n", "<leader>N", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", "silent")
 
 -- LSP
-map("i", "<C-Space>", "compe#complete()", "expr silent")
-map("i", "<CR>", [[compe#confirm(luaeval("require 'nvim-autopairs'.autopairs_cr()"))]], "silent expr")
 map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", "silent")
 map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", "silent")
 map("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", "silent")
@@ -84,7 +145,7 @@ map("n", "Y", "y$")
 map("nv", "<C-y>", '"+y')
 map("nv", "<C-Y>", '"+y$')
 
--- Copy into clipboard
+-- Yeet into clipboard
 map("nv", "<C-p>", '"+p')
 map("nv", "<C-P>", '"+P')
 
@@ -99,12 +160,12 @@ map("v", "<", "<gv")
 map("v", ">", ">gv")
 
 -- Add banklines (without comments)
-map("n", "<C-m>", ":set paste<CR>O<ESC>j:set nopaste<CR>", "silent")
-map("n", "<C-k>", ":set paste<CR>o<ESC>k:set nopaste<CR>", "silent")
+map("n", "<C-,>", ":set paste<CR>O<ESC>j:set nopaste<CR>", "silent")
+map("n", "<C-.>", ":set paste<CR>o<ESC>k:set nopaste<CR>", "silent")
 
 -- Quickfix baby
-map("n", "<C-l>", ":cnext<CR>zz")
-map("n", "<C-h>", ":cprev<CR>zz")
+map("n", "]q", ":cnext<CR>zz")
+map("n", "[q", ":cprev<CR>zz")
 map(
 	"n",
 	"<leader>q",
