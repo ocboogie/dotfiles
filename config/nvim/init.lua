@@ -49,6 +49,13 @@ cmd([[
   augroup END
 ]])
 
+-- cmd([[
+--   augroup fmt
+--     autocmd!
+--     au BufWritePre * try | undojoin | Neoformat | catch /^Vim\%((\a\+)\)\=:E790/ | finally | silent Neoformat | endtry
+--   augroup END
+-- ]])
+
 ------------------ LSP --------------------
 CmpMapping = function(cmp)
 	return {
@@ -62,6 +69,8 @@ end
 
 -- https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md
 LSPServers = {
+	-- Have to have gopls installed
+	"gopls",
 	-- pnpm install -g vscode-langservers-extracted
 	"cssls",
 	"html",
@@ -74,6 +83,24 @@ LSPServers = {
 	"svelte",
 	-- pnpm install -g typescript typescript-language-server
 	"tsserver",
+	java_language_server = { cmd = { "/Users/boogie/Downloads/java-language-server/dist/lang_server_mac.sh" } },
+	-- brew install tectonic && brew install texlab
+	texlab = {
+		settings = {
+			texlab = {
+				build = {
+					onSave = true,
+					executable = "tectonic",
+					args = {
+						"%f",
+						"--synctex",
+						"--keep-logs",
+						"--keep-intermediates",
+					},
+				},
+			},
+		},
+	},
 	-- Currently just using the one lspinstall installed
 	sumneko_lua = {
 		cmd = { vim.fn.stdpath("data") .. "/lspinstall/lua/sumneko-lua-language-server" },
@@ -96,11 +123,24 @@ LSPServers = {
 }
 
 NullLsSources = function(null_ls)
+	local h = require("null-ls.helpers")
+
 	-- https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
 	return {
 		null_ls.builtins.formatting.stylua,
 		null_ls.builtins.formatting.prettierd,
 		null_ls.builtins.formatting.gofmt,
+		h.make_builtin({
+			method = null_ls.methods.FORMATTING,
+			filetypes = { "tex" },
+			generator_opts = {
+				command = "latexindent",
+				ignore_stderr = true,
+				to_stdin = true,
+				args = { "-g /dev/stderr" },
+			},
+			factory = h.formatter_factory,
+		}),
 	}
 end
 
@@ -111,6 +151,8 @@ augroup filetype_jsx
     autocmd FileType javascript set filetype=javascriptreact
 augroup END
 ]])
+
+g["tex_flavor"] = "latex"
 
 ------------------ Mapping --------------------
 -- I ain't perfect I need some tree
@@ -178,3 +220,6 @@ map("n", "<leader>gg", "<cmd>Git<cr>", "silent")
 
 -- <C-w> too hard...
 map("n", "<leader>w", "<C-w>")
+
+-- Snippin
+map("i", "<Tab>", "vsnip#jumpable(1) ? 'vsnip-jump-next' : '<Tab>'", "expr")
