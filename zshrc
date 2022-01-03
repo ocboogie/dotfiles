@@ -1,22 +1,16 @@
 # zinit
 source ~/.zinit/bin/zinit.zsh # zinit bootstrap
 
-# Install fzf (https://zdharma.github.io/zinit/wiki/Zinit-Packages/#introductory_example)
-zinit pack"binary" for fzf
-
 # zsh-autosuggestions
 zinit ice wait lucid atload"!_zsh_autosuggest_start; bindkey '^ ' autosuggest-accept"
 zinit light zsh-users/zsh-autosuggestions
-
-# diff-so-fancy
-zinit ice wait"2" lucid as"program" pick"bin/git-dsf"
-zinit load zdharma/zsh-diff-so-fancy
 
 # Additional completion definitions
 zinit ice wait lucid blockf atpull'zinit creinstall -q .' 
 zinit light zsh-users/zsh-completions
 
 # Use system clipboard in vi mode
+typeset -g ZSH_SYSTEM_CLIPBOARD_USE_WL_CLIPBOARD='true'
 zinit ice wait lucid
 zinit light kutsan/zsh-system-clipboard
 
@@ -38,8 +32,8 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
 # History
 HISTFILE=~/.zsh_history
-HISTSIZE=1000
-SAVEHIST=1000
+HISTSIZE=10000
+SAVEHIST=10000
 setopt INC_APPEND_HISTORY_TIME # "Writes to history from all terminals but that 
 
 # Faster escaping in vi mode (see https://www.johnhawthorn.com/2012/09/vi-escape-delays/)

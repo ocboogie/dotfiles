@@ -13,7 +13,7 @@ end
 
 M.lspconfig = function()
 	local null_ls = require("null-ls")
-	null_ls.config({
+	null_ls.setup({
 		sources = NullLsSources(null_ls),
 	})
 

@@ -69,8 +69,8 @@ end
 
 -- https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md
 LSPServers = {
-	-- Have to have gopls installed
-	"gopls",
+	-- go install golang.org/x/tools/gopls@latest
+  "gopls",
 	-- pnpm install -g vscode-langservers-extracted
 	"cssls",
 	"html",
@@ -83,6 +83,7 @@ LSPServers = {
 	"svelte",
 	-- pnpm install -g typescript typescript-language-server
 	"tsserver",
+  "rust_analyzer",
 	java_language_server = { cmd = { "/Users/boogie/Downloads/java-language-server/dist/lang_server_mac.sh" } },
 	-- brew install tectonic && brew install texlab
 	texlab = {
@@ -101,9 +102,9 @@ LSPServers = {
 			},
 		},
 	},
-	-- Currently just using the one lspinstall installed
 	sumneko_lua = {
-		cmd = { vim.fn.stdpath("data") .. "/lspinstall/lua/sumneko-lua-language-server" },
+    -- ~/.local/share/nvim/lsp_servers/sumneko_lua
+		cmd = { vim.fn.stdpath("data") .. "/lsp_servers/sumneko_lua" },
 		settings = {
 			Lua = {
 				runtime = {
@@ -118,18 +119,32 @@ LSPServers = {
 				},
 			},
 		},
-	},
-	"null-ls",
+	}
 }
 
 NullLsSources = function(null_ls)
 	local h = require("null-ls.helpers")
 
+  -- vim.env.PRETTIERD_DEFAULT_CONFIG = vim.fn.stdpath "config" .. "/.prettierrc"
+
 	-- https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
 	return {
 		null_ls.builtins.formatting.stylua,
-		null_ls.builtins.formatting.prettierd,
+    null_ls.builtins.formatting.prettierd.with {
+      filetypes = {
+        "typescriptreact",
+        "typescript",
+        "javascriptreact",
+        "javascript",
+        "svelte",
+        "json",
+        "jsonc",
+        "css",
+        "html",
+      },
+    },
 		null_ls.builtins.formatting.gofmt,
+		null_ls.builtins.formatting.rustfmt,
 		h.make_builtin({
 			method = null_ls.methods.FORMATTING,
 			filetypes = { "tex" },
@@ -172,7 +187,7 @@ map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", "silent")
 map("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", "silent")
 map("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", "silent")
 map("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", "silent")
-map("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", "silent")
+map("nv", "<leader>a", "<cmd>lua vim.lsp.buf.code_action()<CR>", "silent")
 
 -- Switch to last
 map("n", "<leader>s", "<C-^>")
