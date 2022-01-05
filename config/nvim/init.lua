@@ -49,13 +49,6 @@ cmd([[
   augroup END
 ]])
 
--- cmd([[
---   augroup fmt
---     autocmd!
---     au BufWritePre * try | undojoin | Neoformat | catch /^Vim\%((\a\+)\)\=:E790/ | finally | silent Neoformat | endtry
---   augroup END
--- ]])
-
 ------------------ LSP --------------------
 CmpMapping = function(cmp)
 	return {
@@ -70,7 +63,7 @@ end
 -- https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md
 LSPServers = {
 	-- go install golang.org/x/tools/gopls@latest
-  "gopls",
+	"gopls",
 	-- pnpm install -g vscode-langservers-extracted
 	"cssls",
 	"html",
@@ -83,7 +76,7 @@ LSPServers = {
 	"svelte",
 	-- pnpm install -g typescript typescript-language-server
 	"tsserver",
-  "rust_analyzer",
+	"rust_analyzer",
 	java_language_server = { cmd = { "/Users/boogie/Downloads/java-language-server/dist/lang_server_mac.sh" } },
 	-- brew install tectonic && brew install texlab
 	texlab = {
@@ -102,9 +95,10 @@ LSPServers = {
 			},
 		},
 	},
+	-- Just using lsp installer for now
 	sumneko_lua = {
-    -- ~/.local/share/nvim/lsp_servers/sumneko_lua
-		cmd = { vim.fn.stdpath("data") .. "/lsp_servers/sumneko_lua" },
+		-- ~/.local/share/nvim/lsp_servers/sumneko_lua
+		cmd = { vim.fn.stdpath("data") .. "/lsp_servers/sumneko_lua/extension/server/bin/lua-language-server" },
 		settings = {
 			Lua = {
 				runtime = {
@@ -119,30 +113,30 @@ LSPServers = {
 				},
 			},
 		},
-	}
+	},
 }
 
 NullLsSources = function(null_ls)
 	local h = require("null-ls.helpers")
 
-  -- vim.env.PRETTIERD_DEFAULT_CONFIG = vim.fn.stdpath "config" .. "/.prettierrc"
+	-- vim.env.PRETTIERD_DEFAULT_CONFIG = vim.fn.stdpath "config" .. "/.prettierrc"
 
 	-- https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
 	return {
 		null_ls.builtins.formatting.stylua,
-    null_ls.builtins.formatting.prettierd.with {
-      filetypes = {
-        "typescriptreact",
-        "typescript",
-        "javascriptreact",
-        "javascript",
-        "svelte",
-        "json",
-        "jsonc",
-        "css",
-        "html",
-      },
-    },
+		null_ls.builtins.formatting.prettierd.with({
+			filetypes = {
+				"typescriptreact",
+				"typescript",
+				"javascriptreact",
+				"javascript",
+				"svelte",
+				"json",
+				"jsonc",
+				"css",
+				"html",
+			},
+		}),
 		null_ls.builtins.formatting.gofmt,
 		null_ls.builtins.formatting.rustfmt,
 		h.make_builtin({

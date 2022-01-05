@@ -2,7 +2,7 @@ return require("packer").startup(function(use)
 	use("wbthomason/packer.nvim")
 	use("nvim-lua/plenary.nvim")
 	use("jose-elias-alvarez/null-ls.nvim")
-  use("williamboman/nvim-lsp-installer")
+	use("williamboman/nvim-lsp-installer")
 	use({
 		"neovim/nvim-lspconfig",
 		config = function()
@@ -80,7 +80,6 @@ return require("packer").startup(function(use)
 			})
 		end,
 	})
-	-- use({ "kabouzeid/nvim-lspinstall" })
 	use({
 		"hrsh7th/nvim-cmp",
 		requires = {
@@ -98,7 +97,15 @@ return require("packer").startup(function(use)
 	use({
 		"kyazdani42/nvim-tree.lua",
 		config = function()
-			require("nvim-tree").setup({})
+			vim.g.nvim_tree_respect_buf_cwd = 1
+
+			require("nvim-tree").setup({
+				update_cwd = true,
+				update_focused_file = {
+					enable = true,
+					update_cwd = true,
+				},
+			})
 		end,
 	})
 	use({ "lewis6991/gitsigns.nvim", config = [[require("git")]] })
@@ -108,20 +115,16 @@ return require("packer").startup(function(use)
 			require("nvim_comment").setup()
 		end,
 	})
-	-- use("JoosepAlviste/nvim-ts-context-commentstring")
+	use("JoosepAlviste/nvim-ts-context-commentstring")
 	use({
 		"ahmedkhalf/project.nvim",
 		config = function()
-			vim.g.nvim_tree_update_cwd = 1
-			vim.g.nvim_tree_respect_buf_cwd = 1
-
 			require("project_nvim").setup({
 				manual_mode = true,
 			})
 		end,
 	})
 	use("kyazdani42/nvim-web-devicons")
-	use("akinsho/bufferline.nvim")
 	use({
 		"akinsho/nvim-toggleterm.lua",
 		event = "BufWinEnter",
