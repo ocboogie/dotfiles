@@ -2,7 +2,22 @@ return require("packer").startup(function(use)
 	use("wbthomason/packer.nvim")
 	use("nvim-lua/plenary.nvim")
 	use("jose-elias-alvarez/null-ls.nvim")
-	use("williamboman/nvim-lsp-installer")
+	use("famiu/bufdelete.nvim")
+	use("andweeb/presence.nvim")
+	use({
+		"akinsho/bufferline.nvim",
+		tag = "v2.*",
+		requires = "kyazdani42/nvim-web-devicons",
+		config = function()
+			require("bufferline").setup({})
+		end,
+	})
+	use({
+		"williamboman/mason.nvim",
+		config = function()
+			require("mason").setup()
+		end,
+	})
 	use({
 		"neovim/nvim-lspconfig",
 		config = function()
@@ -11,24 +26,39 @@ return require("packer").startup(function(use)
 	})
 	use("tpope/vim-fugitive")
 	use({
-		"karb94/neoscroll.nvim",
+		"declancm/cinnamon.nvim",
 		config = function()
-			require("neoscroll").setup()
+			require("cinnamon").setup()
 		end,
 	})
 	use({
 		"lervag/vimtex",
 		ft = "tex",
+		-- config = function()
+		-- 	vim.g.vimtex_compiler_method = "tectonic"
+		-- end,
 	})
-	-- use({
-	-- 	"lukas-reineke/indent-blankline.nvim",
-	-- 	event = "BufRead",
-	-- 	config = function()
-	-- 		require("indent_blankline").setup({
-	-- 			show_current_context = true,
-	-- 		})
-	-- 	end,
-	-- })
+	use({
+		"Darazaki/indent-o-matic",
+		config = function()
+			require("indent-o-matic").setup({})
+		end,
+	})
+	use({
+		"itchyny/lightline.vim",
+		config = function()
+			vim.cmd([[
+				let g:lightline = {
+	     	\ 'colorscheme': 'catppuccin',
+				\ 'enable': { 'tabline': 0 },
+	     	\ }
+			]])
+			-- require("feline").setup({})
+		end,
+		-- config = function()
+		-- 	require("statusbar")
+		-- end,
+	})
 	use({
 		"ray-x/lsp_signature.nvim",
 		config = function()
@@ -51,13 +81,19 @@ return require("packer").startup(function(use)
 			})
 		end,
 	})
+	-- use({
+	-- 	"folke/todo-comments.nvim",
+	-- 	config = function()
+	-- 		require("todo-comments").setup({})
+	-- 	end,
+	-- })
+	use("nvim-telescope/telescope-project.nvim")
 	use({
-		"folke/todo-comments.nvim",
+		"rcarriga/nvim-notify",
 		config = function()
-			require("todo-comments").setup({})
+			vim.notify = require("notify")
 		end,
 	})
-	use("nvim-telescope/telescope-project.nvim")
 	use({
 		"nvim-telescope/telescope.nvim",
 		config = function()
@@ -81,12 +117,18 @@ return require("packer").startup(function(use)
 		end,
 	})
 	use({
+		"stevearc/aerial.nvim",
+		config = function()
+			require("aerial").setup()
+		end,
+	})
+	use({
 		"hrsh7th/nvim-cmp",
 		requires = {
+			"dcampos/nvim-snippy",
 			"onsails/lspkind-nvim",
-			"hrsh7th/vim-vsnip",
-			"hrsh7th/cmp-vsnip",
-			"hrsh7th/vim-vsnip-integ",
+			"dcampos/cmp-snippy",
+			"hrsh7th/cmp-path",
 			"hrsh7th/cmp-buffer",
 			"hrsh7th/cmp-nvim-lsp",
 		},
@@ -95,24 +137,28 @@ return require("packer").startup(function(use)
 		end,
 	})
 	use({
-		"kyazdani42/nvim-tree.lua",
+		"nvim-neo-tree/neo-tree.nvim",
+		branch = "v2.x",
+		requires = {
+			"nvim-lua/plenary.nvim",
+			"kyazdani42/nvim-web-devicons", -- not strictly required, but recommended
+			"MunifTanjim/nui.nvim",
+		},
 		config = function()
-			vim.g.nvim_tree_respect_buf_cwd = 1
-
-			require("nvim-tree").setup({
-				update_cwd = true,
-				update_focused_file = {
-					enable = true,
-					update_cwd = true,
+			require("neo-tree").setup({
+				window = {
+					mappings = {
+						["/"] = "noop",
+					},
 				},
 			})
 		end,
 	})
 	use({ "lewis6991/gitsigns.nvim", config = [[require("git")]] })
 	use({
-		"terrortylor/nvim-comment",
+		"numToStr/Comment.nvim",
 		config = function()
-			require("nvim_comment").setup()
+			require("Comment").setup()
 		end,
 	})
 	use("JoosepAlviste/nvim-ts-context-commentstring")
@@ -124,9 +170,9 @@ return require("packer").startup(function(use)
 			})
 		end,
 	})
-	use("kyazdani42/nvim-web-devicons")
+	use("folke/lsp-colors.nvim")
 	use({
-		"akinsho/nvim-toggleterm.lua",
+		"akinsho/toggleterm.nvim",
 		event = "BufWinEnter",
 		config = function()
 			require("toggleterm").setup({
@@ -136,9 +182,51 @@ return require("packer").startup(function(use)
 		end,
 	})
 	use({
-		"folke/tokyonight.nvim",
+		"catppuccin/nvim",
+		as = "catppuccin",
 		config = function()
-			vim.cmd("colorscheme tokyonight")
+			vim.cmd.colorscheme("catppuccin")
+		end,
+	})
+	-- use({
+	-- 	"dracula/vim",
+	-- 	config = function()
+	-- 		vim.cmd("colorscheme dracula")
+	-- 	end,
+	-- })
+	-- use({
+	-- 	"folke/tokyonight.nvim",
+	-- 	config = function()
+	-- 		vim.cmd("colorscheme tokyonight")
+	-- 	end,
+	-- })
+	use({
+		"lukas-reineke/indent-blankline.nvim",
+		config = function()
+			require("indent_blankline").setup({
+				-- for example, context is off by default, use this to turn it on
+				show_current_context = true,
+				show_current_context_start = true,
+			})
+		end,
+	})
+	use({
+		"ianding1/leetcode.vim",
+		config = function()
+			vim.g.leetcode_browser = "firefox"
+			vim.g.leetcode_solution_filetype = "python3"
+		end,
+	})
+	use({
+		"folke/which-key.nvim",
+		config = function()
+			require("which-key").setup({})
+		end,
+	})
+	use({
+		"mrjones2014/smart-splits.nvim",
+		config = function()
+			require("smart-splits").setup({})
 		end,
 	})
 end)

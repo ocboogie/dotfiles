@@ -1,26 +1,34 @@
 M = {}
 
-local on_attach = function(client, bufnr)
-	-- Format on save
-	vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
-
-	-- Disable native lsp formatting
-	client.resolved_capabilities.document_formatting = false
-
-	--Enable completion triggered by <c-x><c-o>
-	vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+local on_attach = function(client)
+	-- Disable native lsp formatting, because I don't want both null-ls and
+	-- native lsp formatting
+	client.server_capabilities.document_formatting = false
+	client.server_capabilities.document_range_formatting = false
 end
 
 M.lspconfig = function()
 	local null_ls = require("null-ls")
 	null_ls.setup({
 		sources = NullLsSources(null_ls),
+		on_attach = function(client, bufnr)
+			if client.supports_method("textDocument/formatting") then
+				vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+				vim.api.nvim_create_autocmd("BufWritePre", {
+					group = augroup,
+					buffer = bufnr,
+					callback = function()
+						vim.lsp.buf.format({ bufnr = bufnr })
+					end,
+				})
+			end
+		end,
 	})
 
 	local lspconfig = require("lspconfig")
 
-	local capabilities = vim.lsp.protocol.make_client_capabilities()
-	capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
+	local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
 	for i, v in pairs(LSPServers) do
 		if type(i) == "number" then
 			lspconfig[v].setup({ on_attach = on_attach, capabilities = capabilities })
@@ -31,13 +39,10 @@ M.lspconfig = function()
 		end
 	end
 
-	for _, sign in ipairs({
-		{ name = "LspDiagnosticsSignError", text = "" },
-		{ name = "LspDiagnosticsSignWarning", text = "" },
-		{ name = "LspDiagnosticsSignHint", text = "" },
-		{ name = "LspDiagnosticsSignInformation", text = "" },
-	}) do
-		vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = sign.name })
+	local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+	for type, icon in pairs(signs) do
+		local hl = "DiagnosticSign" .. type
+		vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 	end
 
 	-- https://github.com/neovim/nvim-lspconfig/issues/115#issuecomment-902680058
@@ -64,24 +69,62 @@ M.lspconfig = function()
   ]])
 end
 
+M.lspconfig_installer = function()
+	local lsp_installer = require("nvim-lsp-installer")
+	lsp_installer.on_server_ready(function(server)
+		local opts = {}
+		if server.name == "jdtls" then
+			opts.on_attach = on_attach
+			opts.root_dir = function()
+				return "/Users/boogie/School/CSE12/PA2"
+			end
+		end
+		server:setup(opts)
+	end)
+end
+
 M.cmp = function()
 	local cmp = require("cmp")
-	cmp.setup({
-		formatting = {
-			format = function(_, vim_item)
-				vim_item.kind = require("lspkind").presets.default[vim_item.kind]
-				return vim_item
+	local lspkind = require("lspkind")
+	-- local luasnip = require("luasnip")
+	local snippy = require("snippy")
+
+	snippy.setup({
+		expand_options = {
+			m = function()
+				return vim.fn["vimtex#syntax#in_mathzone"]() == 1
+			end,
+			c = function()
+				return vim.fn["vimtex#syntax#in_comment"]() == 1
 			end,
 		},
+	})
+
+	cmp.setup({
+		formatting = {
+			fields = { "kind", "abbr", "menu" },
+			format = lspkind.cmp_format({
+				mode = "symbol", -- show only symbol annotations
+				maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+			}),
+		},
+		preselect = cmp.PreselectMode.None,
+		-- formatting = {
+		-- 	format = function(_, vim_item)
+		-- 		vim_item.kind = require("lspkind").presets.default[vim_item.kind]
+		-- 		return vim_item
+		-- 	end,
+		-- },
 		snippet = {
 			expand = function(args)
-				vim.fn["vsnip#anonymous"](args.body)
+				-- require("luasnip").lsp_expand(args.body)
+				snippy.expand_snippet(args.body) -- For `snippy` users.
 			end,
 		},
 		mapping = CmpMapping(cmp),
 		sources = {
 			{ name = "nvim_lsp" },
-			{ name = "vsnip" },
+			{ name = "snippy" },
 			{ name = "buffer" },
 		},
 	})
