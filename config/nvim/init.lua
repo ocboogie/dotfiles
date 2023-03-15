@@ -1,15 +1,24 @@
+-- vim:fdm=marker
 local cmd = vim.cmd
 local g = vim.g
 local o = vim.o
 local map = require("utils").map
 
--- Auto compile when plugins.lua is changed
-cmd("autocmd BufWritePost plugins.lua source <afile> | PackerCompile")
-
--- Load plugins
-require("plugins")
-
------------------- General Config --------------------
+-- Lazy.nvim setup {{{
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+	vim.fn.system({
+		"git",
+		"clone",
+		"--filter=blob:none",
+		"https://github.com/folke/lazy.nvim.git",
+		"--branch=stable", -- latest stable release
+		lazypath,
+	})
+end
+vim.opt.rtp:prepend(lazypath)
+-- }}}
+------------------ General Config -------------------- {{{1
 g.mapleader = [[ ]] -- Make the spacebar the leader key
 o.number = true -- Line numbers are good
 o.backspace = "indent,eol,start" -- Allow backspace in insert mode
@@ -51,153 +60,7 @@ cmd([[
   augroup END
 ]])
 
------------------- LSP --------------------
-CmpMapping = function(cmp)
-	local types = require("cmp.types")
-
-	return {
-		["<CR>"] = cmp.mapping.confirm({
-			behavior = cmp.ConfirmBehavior.Replace,
-		}),
-		["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i" }),
-		["<C-n>"] = cmp.mapping(
-			cmp.mapping.select_next_item({ behavior = types.cmp.SelectBehavior.Insert }),
-			{ "i", "c" }
-		),
-		["<C-p>"] = cmp.mapping(
-			cmp.mapping.select_prev_item({ behavior = types.cmp.SelectBehavior.Insert }),
-			{ "i", "c" }
-		),
-		-- ["<Tab>"] = cmp.mapping(function(fallback)
-		-- 	local has_words_before = function()
-		-- 		unpack = unpack or table.unpack
-		-- 		local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-		-- 		return col ~= 0
-		-- 			and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-		-- 	end
-		--
-		-- 	if luasnip.expand_or_jumpable() then
-		-- 		luasnip.expand_or_jump()
-		-- 	elseif has_words_before() then
-		-- 		cmp.complete()
-		-- 	else
-		-- 		fallback()
-		-- 	end
-		-- end, { "i", "s" }),
-		-- ["<S-Tab>"] = cmp.mapping(function(fallback)
-		-- 	if luasnip.jumpable(-1) then
-		-- 		luasnip.jump(-1)
-		-- 	else
-		-- 		fallback()
-		-- 	end
-		-- end, { "i", "s" }),
-	}
-end
-
--- https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md
-LSPServers = {
-	-- go install golang.org/x/tools/gopls@latest
-	"gopls",
-	-- pnpm install -g vscode-langservers-extracted
-	"cssls",
-	"html",
-	"jsonls",
-	-- pnpm install -g sql-language-server
-	"sqlls",
-	-- pnpm install -g @tailwindcss/language-server
-	"tailwindcss",
-	-- pnpm install -g svelte-language-server
-	"svelte",
-	-- pnpm install -g typescript typescript-language-server
-	"tsserver",
-	"rust_analyzer",
-	"pyright",
-	-- java_language_server = { cmd = { "/Users/boogie/Downloads/java-language-server/dist/lang_server_mac.sh" } },
-	-- brew install tectonic && brew install texlab
-	texlab = {
-		settings = {
-			texlab = {
-				build = {
-					onSave = true,
-					executable = "tectonic",
-					args = {
-						"%f",
-						"--synctex",
-						"--keep-logs",
-						"--keep-intermediates",
-					},
-				},
-			},
-		},
-	},
-
-	-- Just using lsp installer for now
-	"ccls",
-
-	-- Just using lsp installer for now
-	-- sumneko_lua = {
-	-- 	-- ~/.local/share/nvim/lsp_servers/sumneko_lua
-	-- 	cmd = { vim.fn.stdpath("data") .. "/lsp_servers/sumneko_lua/extension/server/bin/lua-language-server" },
-	-- 	settings = {
-	-- 		Lua = {
-	-- 			runtime = {
-	-- 				-- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-	-- 				version = "LuaJIT",
-	-- 				-- Setup your lua path
-	-- 				path = runtime_path,
-	-- 			},
-	-- 			diagnostics = {
-	-- 				-- Get the language server to recognize the `vim` global
-	-- 				globals = { "vim" },
-	-- 			},
-	-- 		},
-	-- 	},
-	-- },
-}
-
-NullLsSources = function(null_ls)
-	local h = require("null-ls.helpers")
-
-	-- vim.env.PRETTIERD_DEFAULT_CONFIG = vim.fn.stdpath("config") .. "/.prettierrc"
-
-	-- https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
-	return {
-		null_ls.builtins.formatting.stylua,
-		null_ls.builtins.formatting.prettierd.with({
-			filetypes = {
-				"typescriptreact",
-				"typescript",
-				"javascriptreact",
-				"javascript",
-				"svelte",
-				"json",
-				"jsonc",
-				"css",
-				"html",
-			},
-		}),
-		null_ls.builtins.formatting.gofmt,
-		null_ls.builtins.formatting.clang_format.with({
-			filetypes = { "java" },
-		}),
-		-- null_ls.builtins.formatting.google_java_format.with({
-		-- 	extra_args = { "--skip-javadoc-formatting" },
-		-- }),
-		null_ls.builtins.formatting.rustfmt,
-		h.make_builtin({
-			method = null_ls.methods.FORMATTING,
-			filetypes = { "tex" },
-			generator_opts = {
-				command = "latexindent",
-				ignore_stderr = true,
-				to_stdin = true,
-				args = { "-g /dev/stderr" },
-			},
-			factory = h.formatter_factory,
-		}),
-	}
-end
-
+------------------ LSP -------------------- {{{1
 -- Treat javascript as javascriptreact
 cmd([[
 augroup filetype_jsx
@@ -208,7 +71,7 @@ augroup END
 
 g["tex_flavor"] = "latex"
 
------------------- Mapping --------------------
+------------------ Mapping -------------------- {{{1
 -- See https://github.com/neovide/neovide/issues/1340
 -- vim.cmd("map <C-[> <Esc>")
 
@@ -292,10 +155,10 @@ map("n", "<C-j>", ":lua require('smart-splits').move_cursor_down()<CR>", "silent
 map("n", "<C-k>", ":lua require('smart-splits').move_cursor_up()<CR>", "silent")
 map("n", "<C-l>", ":lua require('smart-splits').move_cursor_right()<CR>", "silent")
 
-map("n", "<A-h>", ":lua require('smart-splits').resize_left()<CR>", "silent")
-map("n", "<A-j>", ":lua require('smart-splits').resize_up()<CR>", "silent")
-map("n", "<A-k>", ":lua require('smart-splits').resize_down()<CR>", "silent")
-map("n", "<A-l>", ":lua require('smart-splits').resize_right()<CR>", "silent")
+map("n", "<C-H>", ":lua require('smart-splits').resize_left()<CR>", "silent")
+map("n", "<C-J>", ":lua require('smart-splits').resize_up()<CR>", "silent")
+map("n", "<C-K>", ":lua require('smart-splits').resize_down()<CR>", "silent")
+map("n", "<C-L>", ":lua require('smart-splits').resize_right()<CR>", "silent")
 
 -- <C-w> too hard...
 -- map("n", "<leader>w", "<C-w>")
@@ -312,41 +175,311 @@ cmd([[
 
 -- Snippin
 cmd([[
-imap <expr> <Tab> snippy#can_expand_or_advance() ? '<Plug>(snippy-expand-or-advance)' : '<Tab>'
-imap <expr> <S-Tab> snippy#can_jump(-1) ? '<Plug>(snippy-previous)' : '<S-Tab>'
-smap <expr> <Tab> snippy#can_jump(1) ? '<Plug>(snippy-next)' : '<Tab>'
-smap <expr> <S-Tab> snippy#can_jump(-1) ? '<Plug>(snippy-previous)' : '<S-Tab>'
-xmap <Tab> <Plug>(snippy-cut-text)
+  imap <expr> <Tab> snippy#can_expand_or_advance() ? '<Plug>(snippy-expand-or-advance)' : '<Tab>'
+  imap <expr> <S-Tab> snippy#can_jump(-1) ? '<Plug>(snippy-previous)' : '<S-Tab>'
+  smap <expr> <Tab> snippy#can_jump(1) ? '<Plug>(snippy-next)' : '<Tab>'
+  smap <expr> <S-Tab> snippy#can_jump(-1) ? '<Plug>(snippy-previous)' : '<S-Tab>'
+  xmap <Tab> <Plug>(snippy-cut-text)
 ]])
--- imap <silent><expr> <C-k> <Plug>(luasnip-expand-or-jump)
 
--- cmd([[
--- " press <Tab> to expand or jump in a snippet. These can also be mapped separately
--- " via <Plug>luasnip-expand-snippet and <Plug>luasnip-jump-next.
--- imap <silent><expr> <Tab> luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<Tab>'
---
--- snoremap <silent> <C-l> <cmd>lua require('luasnip').jump(1)<Cr>
--- inoremap <silent> <C-l> <cmd>lua require('luasnip').jump(1)<Cr>
--- snoremap <silent> <C-j> <cmd>lua require('luasnip').jump(-1)<Cr>
--- inoremap <silent> <C-j> <cmd>lua require('luasnip').jump(-1)<Cr>
--- ]])
+------------------ Plugins -------------------- {{{1
+require("lazy").setup({
+	"nvim-lua/plenary.nvim",
+	"famiu/bufdelete.nvim",
+	"andweeb/presence.nvim",
+	{ "stevearc/dressing.nvim", event = "VeryLazy" },
+	{
+		"akinsho/bufferline.nvim",
+		version = "v3.*",
+		dependencies = "nvim-tree/nvim-web-devicons",
+		config = function()
+			require("bufferline").setup()
+		end,
+	},
+	{
+		"catppuccin/nvim",
+		priority = 1000,
+		name = "catppuccin",
+		config = function()
+			cmd.colorscheme("catppuccin")
+		end,
+	},
+	{
+		"williamboman/mason.nvim",
+		config = function()
+			require("mason").setup()
+		end,
+	},
+	{
+		"declancm/cinnamon.nvim",
+		config = function()
+			require("cinnamon").setup()
+		end,
+	},
+	{
+		"lervag/vimtex",
+		ft = "tex",
+	},
+	"tpope/vim-fugitive",
+	{
+		"itchyny/lightline.vim",
+		dependencies = "josa42/nvim-lightline-lsp",
+		config = function()
+			vim.cmd([[
+		    let g:lightline = {
+		    	\ 'colorscheme': 'catppuccin',
+		    	\ 'enable': { 'tabline': 0 },
+          \ 'active': {
+          \   'left': [ 
+          \     [ 'mode', 'paste' ],
+          \     [ 'lsp_info', 'lsp_hints', 'lsp_errors', 'lsp_warnings', 'lsp_ok' ], 
+          \     [ 'readonly', 'filename', 'modified'],
+          \     [ 'lsp_status' ] 
+          \   ],
+          \ },
+		    	\ }
 
--- Vsnip
--- cmd([[
---   " Expand
---   imap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
---   smap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
---   " Expand or jump
---   imap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
---   smap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
---   " Jump forward or backward
---   imap <expr> <tab> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<tab>'
---   smap <expr> <tab> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<tab>'
---   imap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>'
---   smap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>'
---   xmap <tab> <Plug>(vsnip-cut-text)
---   "imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
---   "smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
---   "imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
---   "smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
--- ]])
+        call lightline#lsp#register()
+		 	]])
+		end,
+	},
+	{
+		"nvim-telescope/telescope.nvim",
+		dependencies = "nvim-telescope/telescope-project.nvim",
+		config = function()
+			local telescope = require("telescope")
+			telescope.setup({})
+			telescope.load_extension("projects")
+		end,
+	},
+	{
+		"nvim-treesitter/nvim-treesitter",
+		config = function()
+			require("nvim-treesitter.configs").setup({
+				highlight = {
+					enable = true,
+				},
+				context_commentstring = {
+					enable = true,
+					enable_autocmd = false,
+				},
+			})
+		end,
+	},
+	{
+		"VonHeikemen/lsp-zero.nvim",
+		branch = "v1.x",
+		dependencies = {
+			-- LSP Support
+			"neovim/nvim-lspconfig",
+			"williamboman/mason.nvim",
+			"williamboman/mason-lspconfig.nvim",
+			"jay-babu/mason-null-ls.nvim",
+			"jose-elias-alvarez/null-ls.nvim",
+			{
+				"ray-x/lsp_signature.nvim",
+				config = function()
+					require("lsp_signature").setup({})
+				end,
+			},
+
+			-- Autocompletion
+			"hrsh7th/nvim-cmp",
+			"dcampos/nvim-snippy",
+			"onsails/lspkind-nvim",
+			"hrsh7th/cmp-path",
+			"hrsh7th/cmp-buffer",
+			"hrsh7th/cmp-nvim-lsp",
+			"hrsh7th/cmp-nvim-lua",
+			"dcampos/cmp-snippy",
+			"dcampos/nvim-snippy",
+		},
+		config = function()
+			local lsp = require("lsp-zero").preset({
+				name = "minimal",
+				set_lsp_keymaps = true,
+				manage_nvim_cmp = false,
+				manage_luasnip = false,
+				suggest_lsp_servers = false,
+			})
+
+			local cmp = require("cmp")
+			local types = require("cmp.types")
+			local snippy = require("snippy")
+
+			snippy.setup({})
+
+			cmp.setup({
+				preselect = cmp.PreselectMode.None,
+				snippet = {
+					expand = function(args)
+						snippy.expand_snippet(args.body)
+					end,
+				},
+				formatting = {
+					fields = { "kind", "abbr", "menu" },
+					format = require("lspkind").cmp_format({
+						mode = "symbol", -- show only symbol annotations
+						maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+					}),
+				},
+				mapping = {
+					["<CR>"] = cmp.mapping.confirm({
+						behavior = cmp.ConfirmBehavior.Replace,
+					}),
+					["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i" }),
+					["<C-n>"] = cmp.mapping(
+						cmp.mapping.select_next_item({ behavior = types.cmp.SelectBehavior.Insert }),
+						{ "i", "c" }
+					),
+					["<C-p>"] = cmp.mapping(
+						cmp.mapping.select_prev_item({ behavior = types.cmp.SelectBehavior.Insert }),
+						{ "i", "c" }
+					),
+				},
+				sources = {
+					{ name = "path" },
+					{ name = "nvim_lsp" },
+					{ name = "snippy" },
+					{ name = "buffer" },
+				},
+			})
+
+			lsp.setup()
+
+			local null_ls = require("null-ls")
+			local null_opts = lsp.build_options("null-ls", {})
+
+			null_ls.setup({
+				on_attach = function(client, bufnr)
+					null_opts.on_attach(client, bufnr)
+
+					local format_cmd = function(input)
+						vim.lsp.buf.format({
+							id = client.id,
+							timeout_ms = 5000,
+							async = input.bang,
+						})
+					end
+
+					local bufcmd = vim.api.nvim_buf_create_user_command
+					bufcmd(bufnr, "NullFormat", format_cmd, {
+						bang = true,
+						range = true,
+						desc = "Format using null-ls",
+					})
+
+					-- Format on save
+					vim.api.nvim_create_autocmd("BufWritePre", {
+						group = augroup,
+						buffer = bufnr,
+						callback = format_cmd,
+					})
+				end,
+				sources = {
+					-- You can add tools not supported by mason.nvim
+				},
+			})
+
+			local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+			for type, icon in pairs(signs) do
+				local hl = "DiagnosticSign" .. type
+				vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+			end
+
+			-- See mason-null-ls.nvim's documentation for more details:
+			-- https://github.com/jay-babu/mason-null-ls.nvim#setup
+			require("mason-null-ls").setup({
+				ensure_installed = nil,
+				automatic_installation = false, -- You can still set this to `true`
+				automatic_setup = true,
+			})
+
+			-- Required when `automatic_setup` is true
+			require("mason-null-ls").setup_handlers()
+		end,
+	},
+	{
+		"nvim-neo-tree/neo-tree.nvim",
+		branch = "v2.x",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-tree/nvim-web-devicons",
+			"MunifTanjim/nui.nvim",
+		},
+		config = function()
+			require("neo-tree").setup({
+				window = {
+					mappings = {
+						["/"] = "noop",
+					},
+				},
+			})
+		end,
+	},
+	{
+		"lewis6991/gitsigns.nvim",
+		config = function()
+			require("gitsigns").setup({
+				signs = {
+					add = { text = "▎" },
+					change = { text = "▎" },
+					delete = { text = "契" },
+					topdelete = { text = "契" },
+					changedelete = { text = "▎" },
+				},
+			})
+		end,
+	},
+	{
+		"numToStr/Comment.nvim",
+		dependencies = "JoosepAlviste/nvim-ts-context-commentstring",
+		config = function()
+			require("Comment").setup()
+		end,
+	},
+	{
+		"ahmedkhalf/project.nvim",
+		config = function()
+			require("project_nvim").setup({
+				manual_mode = true,
+			})
+		end,
+	},
+	{
+		"akinsho/toggleterm.nvim",
+		event = "BufWinEnter",
+		config = function()
+			require("toggleterm").setup({
+				open_mapping = "<C-t>",
+				direction = "float",
+			})
+		end,
+	},
+	{
+		"lervag/vimtex",
+		ft = "tex",
+		config = function()
+			vim.g.vimtex_view_method = "skim"
+		end,
+	},
+	{
+		"lukas-reineke/indent-blankline.nvim",
+		config = function()
+			require("indent_blankline").setup({
+				show_current_context = true,
+				show_current_context_start = true,
+			})
+		end,
+	},
+	{
+		"folke/which-key.nvim",
+		opts = {},
+	},
+	{
+		"mrjones2014/smart-splits.nvim",
+		config = function()
+			require("smart-splits").setup({})
+		end,
+	},
+})
