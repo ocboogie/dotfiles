@@ -71,6 +71,11 @@ augroup END
 
 g["tex_flavor"] = "latex"
 
+cmd([[
+syntax spell toplevel
+autocmd FileType tex setlocal spell
+]])
+
 ------------------ Mapping -------------------- {{{1
 -- See https://github.com/neovide/neovide/issues/1340
 -- vim.cmd("map <C-[> <Esc>")
@@ -94,6 +99,17 @@ map("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", "silent")
 map("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", "silent")
 map("nv", "<leader>a", "<cmd>lua vim.lsp.buf.code_action()<CR>", "silent")
 
+-- Diagnostics
+map("n", "<leader>xx", "<cmd>TroubleToggle<cr>", "silent")
+map("n", "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>", "silent")
+map("n", "<leader>xd", "<cmd>TroubleToggle document_diagnostics<cr>", "silent")
+map("n", "<leader>xl", "<cmd>TroubleToggle loclist<cr>", "silent")
+map("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", "silent")
+map("n", "gR", "<cmd>TroubleToggle lsp_references<cr>", "silent")
+
+-- Show all diagnostics on current line in floating window
+map("n", "<leader>d", "<cmd>lua vim.diagnostic.open_float()<CR>", "silent")
+
 -- Switch to last
 map("n", "<leader>s", "<C-^>")
 
@@ -112,10 +128,10 @@ map("nv", "<C-p>", '"+p')
 map("nv", "<C-P>", '"+P')
 
 -- Delete without overwriting the default register
-map("nv", "<leader>d", '"_d')
+-- map("nv", "<leader>d", '"_d')
 
 -- Paste without overwriting the default register
-map("v", "<leader>p", '"_dP')
+-- map("v", "<leader>p", '"_dP')
 
 -- Indent without leaving visual mode
 map("v", "<", "<gv")
@@ -155,13 +171,18 @@ map("n", "<C-j>", ":lua require('smart-splits').move_cursor_down()<CR>", "silent
 map("n", "<C-k>", ":lua require('smart-splits').move_cursor_up()<CR>", "silent")
 map("n", "<C-l>", ":lua require('smart-splits').move_cursor_right()<CR>", "silent")
 
-map("n", "<C-H>", ":lua require('smart-splits').resize_left()<CR>", "silent")
-map("n", "<C-J>", ":lua require('smart-splits').resize_up()<CR>", "silent")
-map("n", "<C-K>", ":lua require('smart-splits').resize_down()<CR>", "silent")
-map("n", "<C-L>", ":lua require('smart-splits').resize_right()<CR>", "silent")
+-- map("n", "<C-H>", ":lua require('smart-splits').resize_left()<CR>", "silent")
+-- map("n", "<C-J>", ":lua require('smart-splits').resize_up()<CR>", "silent")
+-- map("n", "<C-K>", ":lua require('smart-splits').resize_down()<CR>", "silent")
+-- map("n", "<C-L>", ":lua require('smart-splits').resize_right()<CR>", "silent")
 
 -- <C-w> too hard...
 -- map("n", "<leader>w", "<C-w>")
+
+-- https://castel.dev/post/lecture-notes-1/#correcting-spelling-mistakes-on-the-fly
+cmd([[
+  inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
+]])
 
 cmd("command! Snip :Telescope find_files cwd=$HOME/.config/nvim/snippets")
 
@@ -202,12 +223,9 @@ require("lazy").setup({
 		name = "catppuccin",
 		config = function()
 			cmd.colorscheme("catppuccin")
-		end,
-	},
-	{
-		"williamboman/mason.nvim",
-		config = function()
-			require("mason").setup()
+			require("catppuccin").setup({
+				fidget = true,
+			})
 		end,
 	},
 	{
@@ -216,31 +234,12 @@ require("lazy").setup({
 			require("cinnamon").setup()
 		end,
 	},
-	{
-		"lervag/vimtex",
-		ft = "tex",
-	},
 	"tpope/vim-fugitive",
 	{
-		"itchyny/lightline.vim",
-		dependencies = "josa42/nvim-lightline-lsp",
+		"rebelot/heirline.nvim",
+		event = "UiEnter",
 		config = function()
-			vim.cmd([[
-		    let g:lightline = {
-		    	\ 'colorscheme': 'catppuccin',
-		    	\ 'enable': { 'tabline': 0 },
-          \ 'active': {
-          \   'left': [ 
-          \     [ 'mode', 'paste' ],
-          \     [ 'lsp_info', 'lsp_hints', 'lsp_errors', 'lsp_warnings', 'lsp_ok' ], 
-          \     [ 'readonly', 'filename', 'modified'],
-          \     [ 'lsp_status' ] 
-          \   ],
-          \ },
-		    	\ }
-
-        call lightline#lsp#register()
-		 	]])
+			require("statusbar")
 		end,
 	},
 	{
@@ -301,6 +300,7 @@ require("lazy").setup({
 				manage_nvim_cmp = false,
 				manage_luasnip = false,
 				suggest_lsp_servers = false,
+				virtual_text = true,
 			})
 
 			local cmp = require("cmp")
@@ -342,6 +342,7 @@ require("lazy").setup({
 					{ name = "nvim_lsp" },
 					{ name = "snippy" },
 					{ name = "buffer" },
+					{ name = "orgmode" },
 				},
 			})
 
@@ -349,6 +350,16 @@ require("lazy").setup({
 
 			local null_ls = require("null-ls")
 			local null_opts = lsp.build_options("null-ls", {})
+
+			-- See mason-null-ls.nvim's documentation for more details:
+			-- https://github.com/jay-babu/mason-null-ls.nvim#setup
+			require("mason-null-ls").setup({
+				ensure_installed = {
+					-- Opt to list sources here, when available in mason.
+				},
+				automatic_installation = false,
+				handlers = {},
+			})
 
 			null_ls.setup({
 				on_attach = function(client, bufnr)
@@ -377,7 +388,7 @@ require("lazy").setup({
 					})
 				end,
 				sources = {
-					-- You can add tools not supported by mason.nvim
+					null_ls.builtins.formatting.zigfmt,
 				},
 			})
 
@@ -387,16 +398,21 @@ require("lazy").setup({
 				vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 			end
 
-			-- See mason-null-ls.nvim's documentation for more details:
-			-- https://github.com/jay-babu/mason-null-ls.nvim#setup
-			require("mason-null-ls").setup({
-				ensure_installed = nil,
-				automatic_installation = false, -- You can still set this to `true`
-				automatic_setup = true,
+			-- https://github.com/VonHeikemen/lsp-zero.nvim/blob/v1.x/doc/md/lsp.md#configure-diagnostics
+			vim.diagnostic.config({
+				virtual_text = true,
+				signs = true,
+				update_in_insert = false,
+				underline = true,
+				severity_sort = false,
+				float = true,
 			})
-
-			-- Required when `automatic_setup` is true
-			require("mason-null-ls").setup_handlers()
+		end,
+	},
+	{
+		"folke/trouble.nvim",
+		config = function()
+			require("trouble").setup({})
 		end,
 	},
 	{
@@ -461,6 +477,9 @@ require("lazy").setup({
 		ft = "tex",
 		config = function()
 			vim.g.vimtex_view_method = "skim"
+			vim.g.vimtex_quickfix_enabled = 0
+			vim.g.vimtex_view_skim_sync = 1
+			vim.g.vimtex_view_skim_activate = 1
 		end,
 	},
 	{
@@ -480,6 +499,58 @@ require("lazy").setup({
 		"mrjones2014/smart-splits.nvim",
 		config = function()
 			require("smart-splits").setup({})
+		end,
+	},
+	{
+		"j-hui/fidget.nvim",
+		config = function()
+			require("fidget").setup({
+				window = {
+					blend = 0,
+				},
+			})
+		end,
+	},
+	{
+		"echasnovski/mini.surround",
+		version = "*",
+		config = function()
+			require("mini.surround").setup()
+		end,
+	},
+	-- {
+	-- 	"echasnovski/mini.jump",
+	-- 	version = "*",
+	-- 	config = function()
+	-- 		require("mini.jump").setup()
+	-- 	end,
+	-- },
+	{
+		"echasnovski/mini.bracketed",
+		version = "*",
+		config = function()
+			require("mini.bracketed").setup()
+		end,
+	},
+	{
+		"nvim-orgmode/orgmode",
+		config = function()
+			require("orgmode").setup_ts_grammar()
+
+			-- Tree-sitter configuration
+			require("nvim-treesitter.configs").setup({
+				-- If TS highlights are not enabled at all, or disabled via `disable` prop, highlighting will fallback to default Vim syntax highlighting
+				highlight = {
+					enable = true,
+					disable = { "org" }, -- Remove this to use TS highlighter for some of the highlights (Experimental)
+					additional_vim_regex_highlighting = { "org" }, -- Required since TS highlighter doesn't support all syntax features (conceal)
+				},
+				ensure_installed = { "org" }, -- Or run :TSUpdate org
+			})
+
+			require("orgmode").setup({
+				org_agenda_files = { "~/my-orgs/**/*" },
+			})
 		end,
 	},
 })

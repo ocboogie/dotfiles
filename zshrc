@@ -1,9 +1,13 @@
 # zinit
 source ~/.zinit/bin/zinit.zsh # zinit bootstrap
 
-# zsh-autosuggestions
-zinit ice wait lucid atload"!_zsh_autosuggest_start; bindkey '^ ' autosuggest-accept"
-zinit light zsh-users/zsh-autosuggestions
+zinit wait lucid for \
+ atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
+    zdharma-continuum/fast-syntax-highlighting \
+ blockf \
+    zsh-users/zsh-completions \
+ atload"!_zsh_autosuggest_start; bindkey '^ ' autosuggest-accept" \
+    zsh-users/zsh-autosuggestions
 
 # Additional completion definitions
 zinit ice wait lucid blockf atpull'zinit creinstall -q .' 
@@ -15,17 +19,22 @@ zinit ice wait lucid
 zinit light kutsan/zsh-system-clipboard
 
 # fast-syntax-highlighting
-zinit ice wait lucid atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" 
-zinit light zdharma/fast-syntax-highlighting
+# zinit ice wait lucid atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" 
+# zinit light zdharma-continuum/fast-syntax-highlighting
 
 # zdharma/history-search-multi-word
 zstyle ":history-search-multi-word" page-size "11"
 zinit ice wait"1" lucid
-zinit light zdharma/history-search-multi-word
+zinit light zdharma-continuum/history-search-multi-word
 
 # forgit
 zinit ice wait lucid
 zinit light 'wfxr/forgit'
+
+# zsh-z
+# zinit ice wait lucid
+# zinit light 'agkozak/zsh-z'
+zinit load agkozak/zsh-z
 
 # Smart tab complete
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
@@ -58,3 +67,19 @@ eval "$(starship init zsh)"
 if type "thefuck" > /dev/null; then
   eval $(thefuck --alias)
 fi
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/boogie/opt/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/boogie/opt/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/boogie/opt/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/boogie/opt/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
