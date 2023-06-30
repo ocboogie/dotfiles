@@ -203,6 +203,8 @@ cmd([[
   xmap <Tab> <Plug>(snippy-cut-text)
 ]])
 
+map("n", "<space>fb", ":Telescope file_browser<CR>")
+
 ------------------ Plugins -------------------- {{{1
 require("lazy").setup({
 	"nvim-lua/plenary.nvim",
@@ -244,17 +246,22 @@ require("lazy").setup({
 	},
 	{
 		"nvim-telescope/telescope.nvim",
-		dependencies = "nvim-telescope/telescope-project.nvim",
+		dependencies = { "nvim-telescope/telescope-project.nvim", "nvim-telescope/telescope-file-browser.nvim" },
 		config = function()
 			local telescope = require("telescope")
 			telescope.setup({})
 			telescope.load_extension("projects")
+			telescope.load_extension("file_browser")
 		end,
 	},
 	{
 		"nvim-treesitter/nvim-treesitter",
+		dependencies = "windwp/nvim-ts-autotag",
 		config = function()
 			require("nvim-treesitter.configs").setup({
+				autotag = {
+					enable = true,
+				},
 				highlight = {
 					enable = true,
 				},
@@ -530,27 +537,6 @@ require("lazy").setup({
 		version = "*",
 		config = function()
 			require("mini.bracketed").setup()
-		end,
-	},
-	{
-		"nvim-orgmode/orgmode",
-		config = function()
-			require("orgmode").setup_ts_grammar()
-
-			-- Tree-sitter configuration
-			require("nvim-treesitter.configs").setup({
-				-- If TS highlights are not enabled at all, or disabled via `disable` prop, highlighting will fallback to default Vim syntax highlighting
-				highlight = {
-					enable = true,
-					disable = { "org" }, -- Remove this to use TS highlighter for some of the highlights (Experimental)
-					additional_vim_regex_highlighting = { "org" }, -- Required since TS highlighter doesn't support all syntax features (conceal)
-				},
-				ensure_installed = { "org" }, -- Or run :TSUpdate org
-			})
-
-			require("orgmode").setup({
-				org_agenda_files = { "~/my-orgs/**/*" },
-			})
 		end,
 	},
 })
