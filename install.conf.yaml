@@ -8,6 +8,12 @@
     ~/.config/nvim:
       create: true
       path: config/nvim
+    ~/.fish/config.fish:
+      create: true
+      path: config/fish/config.fish
+    ~/.fish/fish_variables:
+      create: true
+      path: config/fish/fish_variables
     ~/.config/alacritty:
       create: true
       path: config/alacritty
