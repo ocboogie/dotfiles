@@ -5,16 +5,9 @@
       if: "[ `uname` = Linux ]"
       path: scripts
     ~/.tmux.conf: tmux.conf
-    ~/.zshrc: zshrc
     ~/.config/nvim:
       create: true
       path: config/nvim
-    ~/.config/emacs/early-init.el:
-      create: true
-      path: config/emacs/early-init.el
-    ~/.config/emacs/init.el:
-      create: true
-      path: config/emacs/init.el
     ~/.config/alacritty:
       create: true
       path: config/alacritty
