@@ -17,6 +17,10 @@
     ~/.config/alacritty:
       create: true
       path: config/alacritty
+    ~/.config/aerospace/aerospace.toml:
+      if: "[ `uname` = Darwin ]"
+      create: true
+      path: config/aerospace/aerospace.toml
     ~/.config/sway:
       if: "[ `uname` = Linux ]"
       create: true
